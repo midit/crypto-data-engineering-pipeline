@@ -50,11 +50,13 @@ Docker (planned)
 ```
 crypto-data-engineering-pipeline
 │
-├── data/
-├── notebooks/
-├── src/
-│   ├── ingest.py
-│   └── transform.py (planned)
+├ data_pipeline
+│  ├ ingest.py
+│  ├ transform.py (planned)
+│  └ load.py (planned)
 │
-└── README.md
+├ api (planned)
+├ database (planned)
+│
+└ README.md
 ```
