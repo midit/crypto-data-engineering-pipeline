@@ -34,18 +34,16 @@ https://www.coingecko.com/en/api
 
 # API Endpoints
 Example endpoints exposed by the FastAPI service:
-### Get all cryptocurrencies
-GET /coins
-Returns all stored cryptocurrencies ordered by market capitalization.
+### Get all cryptocurrencies 
+`GET /coins` — Returns all stored cryptocurrencies ordered by market capitalization.
 
 ### Get a specific coin
-GET /coins/{symbol}
-Example:
-GET /coins/btc
-Returns market data for a specific cryptocurrency.
+`GET /coins/{symbol}` — Returns market data for a specific cryptocurrency.
 
-Interactive API documentation is available at:
-/docs
+Example:  
+`GET /coins/btc`  
+
+Interactive API documentation is available at: `/docs`
 
 ## Tech Stack
 
