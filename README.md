@@ -6,9 +6,9 @@ Small data engineering project that builds a pipeline for collecting and process
 
 ## Project Goal
 
-Build a simple end-to-end data pipeline:
+The project demonstrates a typical data engineering workflow:
 
-API → ingestion → transformation → storage → analytics
+API → ingestion → transformation → storage → API access
 
 The project focuses on practicing data engineering concepts such as:
 
@@ -26,37 +26,60 @@ https://www.coingecko.com/en/api
 
 ## Current Features
 
-- Fetch cryptocurrency market data
-- Convert API response into a structured DataFrame
+- Fetch cryptocurrency market data from the CoinGecko API
+- Transform and clean raw API data using Pandas
+- Store processed data in PostgreSQL
+- Query stored data via a FastAPI REST service
+- Automatic API documentation with Swagger
 
-## Planned Features
+# API Endpoints
+Example endpoints exposed by the FastAPI service:
+### Get all cryptocurrencies
+GET /coins
+Returns all stored cryptocurrencies ordered by market capitalization.
 
-- Data transformation layer
-- Store data in PostgreSQL
-- Dockerized pipeline
-- Scheduled data collection
-- Simple analytics dashboard
+### Get a specific coin
+GET /coins/{symbol}
+Example:
+GET /coins/btc
+Returns market data for a specific cryptocurrency.
+
+Interactive API documentation is available at:
+/docs
 
 ## Tech Stack
 
-Python  
-Pandas  
-CoinGecko API  
-PostgreSQL (planned)  
-Docker (planned)
+- Python
+- Pandas
+- Requests
+- FastAPI
+- PostgreSQL
+- Docker
 
 ## Project Structure
 
 ```
 crypto-data-engineering-pipeline
+├ api
+│ └ main.py # FastAPI service exposing crypto data
 │
 ├ data_pipeline
-│  ├ ingest.py
-│  ├ transform.py (planned)
-│  └ load.py (planned)
+│ ├ ingest.py # Fetch data from CoinGecko API
+│ ├ transform.py # Data cleaning and transformation
+│ └ load.py # Load data into PostgreSQL
 │
-├ api (planned)
-├ database (planned)
+├ database
+│ └ schema.sql # Database schema
 │
 └ README.md
 ```
+
+# Learning Goals
+This project was created to practice **core Data Engineering concepts**, including:
+
+- API data ingestion
+- ETL pipeline design
+- working with DataFrames
+- relational database storage
+- building a data access API
+- containerized data services
