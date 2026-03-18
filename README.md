@@ -29,32 +29,25 @@ https://www.coingecko.com/en/api
 - Fetch cryptocurrency market data from the CoinGecko API
 - Transform and clean raw API data using Pandas
 - Store processed data in PostgreSQL
+- Automated data collection every hour via a scheduler
 - Query stored data via a FastAPI REST service
-- Automatic API documentation with Swagger
+- Automatic API documentation with Swagger UI
 
-# API Endpoints
-Example endpoints exposed by the FastAPI service:
-### Get all cryptocurrencies 
-`GET /coins` — Returns all stored cryptocurrencies ordered by market capitalization.
+## Quick Start (Docker)
 
-### Get a specific coin
-`GET /coins/{symbol}` — Returns market data for a specific cryptocurrency.
+```bash
+cp .env.example .env   # fill in your credentials
+docker compose up --build
+```
 
-Example:  
-`GET /coins/btc`  
+This starts three services:
+- **db** — PostgreSQL (schema applied automatically)
+- **api** — FastAPI on `http://localhost:8000`
+- **scheduler** — runs the pipeline immediately, then every hour
 
-Interactive API documentation is available at: `/docs`
+API docs available at `http://localhost:8000/docs`
 
-## Tech Stack
-
-- Python
-- Pandas
-- Requests
-- FastAPI
-- PostgreSQL
-- Docker
-
-## Setup
+## Manual Setup
 
 1. Clone the repository
 2. Copy `.env.example` to `.env` and fill in your database credentials
@@ -63,27 +56,61 @@ Interactive API documentation is available at: `/docs`
 5. Run the pipeline: `python data_pipeline/load.py`
 6. Start the API: `uvicorn api.main:app --reload`
 
-API docs available at `http://localhost:8000/docs`
+## Running Tests
+
+```bash
+pytest tests/ -v
+```
+
+## API Endpoints
+
+### Get all cryptocurrencies
+`GET /coins` — Returns all stored cryptocurrencies ordered by market capitalization.
+
+### Get a specific coin
+`GET /coins/{symbol}` — Returns market data for a specific cryptocurrency.
+
+Example:
+`GET /coins/btc`
+
+Interactive API documentation available at `/docs`
+
+## Tech Stack
+
+- Python
+- Pandas
+- FastAPI
+- PostgreSQL
+- Docker
+- APScheduler
+- pytest
 
 ## Project Structure
 
 ```
 crypto-data-engineering-pipeline
 ├ api
-│ └ main.py # FastAPI service exposing crypto data
+│ └ main.py             # FastAPI service exposing crypto data
 │
 ├ data_pipeline
-│ ├ ingest.py # Fetch data from CoinGecko API
-│ ├ transform.py # Data cleaning and transformation
-│ └ load.py # Load data into PostgreSQL
+│ ├ ingest.py           # Fetch data from CoinGecko API
+│ ├ transform.py        # Data cleaning and transformation
+│ ├ load.py             # Load data into PostgreSQL
+│ └ scheduler.py        # Automated pipeline (runs every hour)
 │
 ├ database
-│ └ schema.sql # Database schema
+│ └ schema.sql          # Database schema
 │
+├ tests
+│ └ test_transform.py   # Unit tests for transform layer
+│
+├ Dockerfile
+├ docker-compose.yml
 └ README.md
 ```
 
-# Learning Goals
+## Learning Goals
+
 This project was created to practice **core Data Engineering concepts**, including:
 
 - API data ingestion
@@ -92,6 +119,8 @@ This project was created to practice **core Data Engineering concepts**, includi
 - relational database storage
 - building a data access API
 - containerized data services
+- automated scheduling
+- unit testing
 
 ## Acknowledgements
 
