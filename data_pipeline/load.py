@@ -2,7 +2,10 @@ import psycopg2
 import logging
 from ingest import fetch_crypto_data
 from transform import transform_crypto_data
+from dotenv import load_dotenv
+import os
 
+load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
 def load_to_postgres(df, conn_params):
@@ -28,11 +31,11 @@ if __name__ == "__main__":
     df = transform_crypto_data(df)
 
     conn_params = {
-        'host': 'localhost',
-        'database': 'crypto_db',
-        'user': 'postgres',
-        'password': 'postgres',
-        'port': 5432
+        'host': os.getenv('DB_HOST'),
+        'database': os.getenv('DB_NAME'),
+        'user': os.getenv('DB_USER'),
+        'password': os.getenv('DB_PASSWORD'),
+        'port': int(os.getenv('DB_PORT'))
     }
 
     load_to_postgres(df, conn_params)
