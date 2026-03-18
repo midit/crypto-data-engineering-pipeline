@@ -3,9 +3,12 @@ from pydantic import BaseModel
 from datetime import datetime
 import psycopg2
 from dotenv import load_dotenv
+import logging
 import os
 
 load_dotenv()
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger(__name__)
 
 app = FastAPI()
 
@@ -53,8 +56,10 @@ def get_coins():
         cursor.close()
         conn.close()
 
+        logger.info("GET /coins returned %d rows", len(rows))
         return [CoinResponse(symbol=r[0], current_price=r[1], market_cap=r[2], total_volume=r[3], ingested_at=r[4]) for r in rows]
     except Exception as e:
+        logger.error("GET /coins failed: %s", e)
         raise HTTPException(status_code=500, detail=str(e))
 
 
@@ -78,10 +83,13 @@ def get_coin(symbol: str):
         conn.close()
 
         if row is None:
+            logger.warning("GET /coins/%s — not found", symbol)
             raise HTTPException(status_code=404, detail=f"Coin '{symbol}' not found")
 
+        logger.info("GET /coins/%s returned data", symbol)
         return CoinResponse(symbol=row[0], current_price=row[1], market_cap=row[2], total_volume=row[3], ingested_at=row[4])
     except HTTPException:
         raise
     except Exception as e:
+        logger.error("GET /coins/%s failed: %s", symbol, e)
         raise HTTPException(status_code=500, detail=str(e))
