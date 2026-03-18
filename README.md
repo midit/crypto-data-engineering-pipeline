@@ -54,6 +54,17 @@ Interactive API documentation is available at: `/docs`
 - PostgreSQL
 - Docker
 
+## Setup
+
+1. Clone the repository
+2. Copy `.env.example` to `.env` and fill in your database credentials
+3. Install dependencies: `pip install -r requirements.txt`
+4. Apply the database schema: `psql -d your_db -f database/schema.sql`
+5. Run the pipeline: `python data_pipeline/load.py`
+6. Start the API: `uvicorn api.main:app --reload`
+
+API docs available at `http://localhost:8000/docs`
+
 ## Project Structure
 
 ```
@@ -81,3 +92,7 @@ This project was created to practice **core Data Engineering concepts**, includi
 - relational database storage
 - building a data access API
 - containerized data services
+
+## Acknowledgements
+
+Built with assistance from [Claude Code](https://claude.ai/claude-code) (Anthropic) — used for code review, refactoring, and improvements to the API layer.
